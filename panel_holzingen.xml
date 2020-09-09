@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<layout-config filename="panel_holzingen.xml" type="DCC" version="20200803_155520">
+    <panels>
+        <panel name="Holzingen">
+            <locos/>
+            <tracks>
+                <track x="40" x2="950" y="80" y2="80"/>
+                <track x="40" x2="250" y="40" y2="40"/>
+                <track x="40" x2="410" y="120" y2="120"/>
+                <track x="250" x2="290" y="40" y2="80"/>
+                <track x="290" x2="330" y="120" y2="80"/>
+                <track x="560" x2="1100" y="220" y2="220"/>
+                <track x="700" x2="740" y="80" y2="40"/>
+                <track x="700" x2="740" y="220" y2="260"/>
+                <track x="740" x2="1080" y="40" y2="40"/>
+                <track x="740" x2="1100" y="260" y2="260"/>
+                <track x="740" x2="780" y="220" y2="180"/>
+                <track x="780" x2="1100" y="180" y2="180"/>
+                <track x="950" x2="990" y="80" y2="40"/>
+            </tracks>
+            <turnouts>
+                <turnout adr="1" x="290" x2="276" xt="280" y="80" y2="80" yt="70"/>
+                <turnout adr="2" x="290" x2="304" xt="300" y="120" y2="120" yt="110"/>
+                <turnout adr="3" x="330" x2="316" xt="320" y="80" y2="80" yt="90"/>
+                <turnout adr="5" x="700" x2="714" xt="710" y="80" y2="80" yt="70"/>
+                <turnout adr="7" x="700" x2="714" xt="710" y="220" y2="220" yt="230"/>
+                <turnout adr="8" x="740" x2="754" xt="750" y="220" y2="220" yt="210"/>
+                <turnout adr="6" x="990" x2="976" xt="980" y="40" y2="40" yt="50"/>
+            </turnouts>
+            <sensors>
+                <sensor adr="6,1006" x="70" x2="230" y="40" y2="40"/>
+                <sensor adr="4,1004" x="70" x2="250" y="80" y2="80"/>
+                <sensor adr="5,1005" x="70" x2="250" y="120" y2="120"/>
+                <sensor adr="3,1003" x="410" x2="590" y="80" y2="80"/>
+                <sensor adr="0,1000" x="760" x2="940" y="80" y2="80"/>
+                <sensor adr="0,1000" x="770" x2="930" y="40" y2="40"/>
+                <sensor adr="7,1007" x="770" x2="1070" y="260" y2="260"/>
+                <sensor adr="2,1002" x="790" x2="1070" y="220" y2="220"/>
+                <sensor adr="0,1000" x="810" x2="1080" y="180" y2="180"/>
+            </sensors>
+            <signals/>
+            <routebuttons/>
+            <routes/>
+            <comproutes/>
+            <trips/>
+            <timetables/>
+        </panel>
+    </panels>
+</layout-config>
