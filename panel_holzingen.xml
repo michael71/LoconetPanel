@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<layout-config filename="panel_holzingen.xml" type="DCC" version="20200803_155520">
+<layout-config filename="panel_holzingen.xml" type="?" version="20200803_155520">
     <panels>
         <panel name="Holzingen">
             <locos/>
@@ -32,11 +32,11 @@
                 <sensor adr="4,1004" x="70" x2="250" y="80" y2="80"/>
                 <sensor adr="5,1005" x="70" x2="250" y="120" y2="120"/>
                 <sensor adr="3,1003" x="410" x2="590" y="80" y2="80"/>
-                <sensor adr="0,1000" x="760" x2="940" y="80" y2="80"/>
-                <sensor adr="0,1000" x="770" x2="930" y="40" y2="40"/>
+                <sensor adr="10,1010" x="760" x2="940" y="80" y2="80"/>
+                <sensor adr="11,1011" x="770" x2="930" y="40" y2="40"/>
                 <sensor adr="7,1007" x="770" x2="1070" y="260" y2="260"/>
                 <sensor adr="2,1002" x="790" x2="1070" y="220" y2="220"/>
-                <sensor adr="0,1000" x="810" x2="1080" y="180" y2="180"/>
+                <sensor adr="8,1008" x="810" x2="1080" y="180" y2="180"/>
             </sensors>
             <signals/>
             <routebuttons/>
