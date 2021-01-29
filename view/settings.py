@@ -18,9 +18,10 @@ class SettingsDialog(qtw.QDialog):
         form.setContentsMargins(20,20,20,20)
         form.setVerticalSpacing(20)
         self.setLayout(form)
+        self.setWindowTitle('Settings')
         self.settings = settings
         self.layout().addRow(
-            qtw.QLabel('<h4>Loconet-Panel Settings</h4>'),
+            qtw.QLabel('<h4>LbServer Settings</h4>'),
         )
 
 
@@ -43,6 +44,7 @@ class SettingsDialog(qtw.QDialog):
         self.layout().addRow("Port", self.port_text)
 
         self.layout().addRow(" ", None)
+        self.layout().addRow(qtw.QLabel('<H4>Panel Settings</H4>'))
 
         self.disp_addr_cb = qtw.QCheckBox(
             checked=settings.value('disp_dcc_addresses', type=bool)

@@ -17,6 +17,7 @@ class PanelData:
 
     def readXML(self, filename, printFlag):
         xmldoc = minidom.parse(filename)
+        print(xmldoc)
 
         config.trks = []
         config.turn = []

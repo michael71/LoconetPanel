@@ -70,7 +70,7 @@ class MainWindow(qtw.QMainWindow):
         self.build_menu()
 
         panel_file = self.settings.value('panel_file')
-        if not panel_file:
+        if not panel_file or not os.path.isfile(panel_file):
             print("from settings: filename=None")
             self.select_file()  #includes read_data_file()
         else:
