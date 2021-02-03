@@ -13,7 +13,7 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 
-from model import constants
+from model import constants as const
 from model.readxml import PanelData
 from model.track import Track, Sensor, Turnout
 from model.tcp_ln import TcpLNClient
@@ -28,6 +28,7 @@ def print_statistics():
     print("main, #trks=" + str(len(config.trks)))
     print("main, #sens=" + str(len(config.sens)))
     print("main, #turn=" + str(len(config.turn)))
+    print("main, #signals=" + str(len(config.signals)))
     # print("main, adr of first sensor="+str(config.sens[0].adr))
 
 
@@ -68,6 +69,7 @@ class MainWindow(qtw.QMainWindow):
 
         # Setup the menu
         self.build_menu()
+        self.simulationIsOn = True
 
         panel_file = self.settings.value('panel_file')
         if not panel_file or not os.path.isfile(panel_file):
@@ -153,7 +155,6 @@ class MainWindow(qtw.QMainWindow):
         else:
             print("no filename selected")
 
-
     def paintEvent(self, e):
         qp = qtg.QPainter(self)
         scale = self.get_scale()
@@ -171,10 +172,10 @@ class MainWindow(qtw.QMainWindow):
         else:  # string is None
             scale = 1.0
             self.settings.value('scale', 1.0)
-        if scale < constants.MIN_SCALE:
-            scale = constants.MIN_SCALE
-        if scale > constants.MAX_SCALE:
-            scale = constants.MAX_SCALE
+        if scale < const.MIN_SCALE:
+            scale = const.MIN_SCALE
+        if scale > const.MAX_SCALE:
+            scale = const.MAX_SCALE
         return scale
 
     def mousePressEvent(self, e):
@@ -183,16 +184,22 @@ class MainWindow(qtw.QMainWindow):
             x = e.x()/sc
             y = e.y()/sc
             # print("mouse pressed (left)"+str(x)+"/"+str(y))
-            for tu in config.turn:
-                if tu.touched(x, y):
-                    print("hit T"+str(tu.adr))
-                    if tu.state:  # toggle state
-                        st = 1
+            list_active_pes = config.turn + config.signals  # all active panel elements
+            for pe in list_active_pes:
+                if pe.touched(x, y):
+                    print("hit adr="+str(pe.adr)+" st="+str(pe.state))
+                    if pe.state == const.State.CLOSED:  # toggle state
+                        st = const.State.THROWN
                     else:
-                        st = 0
-                    lnstring = ln_command.set_accessory(tu.adr,st)
-                    if lnstring:
-                        self.interface.send_message(lnstring)
+                        st = const.State.CLOSED
+                    if self.simulationIsOn:
+                        pe.state = st
+                        self.update()
+                    else:
+                        print("changing to: st=" + str(st))
+                        lnstring = ln_command.set_accessory(pe.adr,st)
+                        if lnstring:
+                            self.interface.send_message(lnstring)
                     break
             e.accept()
         # right button not yet implemented
@@ -218,6 +225,10 @@ class MainWindow(qtw.QMainWindow):
 
         # draw Turnouts (depend on t.state)
         for t in config.turn:
+            t.draw(qp, adr_flag)
+
+        # draw signals (depend on t.state)
+        for t in config.signals:
             t.draw(qp, adr_flag)
 
     def showAboutBox(self):

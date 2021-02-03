@@ -1,13 +1,13 @@
 # readxml.py   (xml read with "minidom" parser)
 #
-# MB, 03 Aug 2020 - works.
+# MB, 02 Feb 2021
 #
 # see: https://stackoverflow.com/questions/1912434/how-do-i-parse-xml-in-python
 
 from xml.dom import minidom
 
 import config
-from .track import Track, Turnout, Sensor
+from .track import Track, Turnout, Sensor, Signal
 
 
 class PanelData:
@@ -22,6 +22,7 @@ class PanelData:
         config.trks = []
         config.turn = []
         config.sens = []
+        config.signals = []
 
         track_list = xmldoc.getElementsByTagName('track')
         for t in track_list:
@@ -35,6 +36,10 @@ class PanelData:
         for t in sensor_list:
             config.sens.append(Sensor(t.attributes))
 
+        signal_list = xmldoc.getElementsByTagName('signal')
+        for t in signal_list:
+            config.signals.append(Signal(t.attributes))
+
         if printFlag:
             print(str(len(config.trks)) + " tracks:")
             for tr in config.trks:
@@ -46,6 +51,10 @@ class PanelData:
 
             print(str(len(config.sens)) + " sensors:")
             for se in config.sens:
+                print(se)
+
+            print(str(len(config.signals)) + " signals:")
+            for se in config.signals:
                 print(se)
 
         # determine place needed for panel

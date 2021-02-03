@@ -1,13 +1,15 @@
 ## LoconetPanel program
 
-connects to an LbServer and displays a panel, as defined in an XML file
+Client program which connects to an LbServer (see http://loconetovertcp.sourceforge.net/ ) and displays a model railroad
+control panel, as defined in an XML file. 
 
-uses PyQt5
+This XML file (describing a model railroad layout) can be graphically created with SX4Draw 
+(see https://github.com/michael71/SX4Draw ) - an example is in the root directory named "panel_holzingen.xml".
 
-start in LoconetPanel folder with 
+uses PyQt5, cd to the project folder (LoconetPanel), then start with: 
 
     python3 main.py
 
 
-Copyright: Michael Blank 2020
+Copyright: Michael Blank 2020, 2021
 
