@@ -7,7 +7,10 @@
 from xml.dom import minidom
 
 import config
-from .track import Track, Turnout, Sensor, Signal
+from .track import Track
+from .turnout import Turnout
+from .sensor import Sensor
+from .signal import Signal
 
 
 class PanelData:

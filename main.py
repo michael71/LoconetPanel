@@ -15,7 +15,7 @@ from PyQt5 import QtCore as qtc
 
 from model import constants as const
 from model.readxml import PanelData
-from model.track import Track, Sensor, Turnout
+
 from model.tcp_ln import TcpLNClient
 from view.settings import SettingsDialog
 import model.ln_command as ln_command
@@ -105,9 +105,7 @@ class MainWindow(qtw.QMainWindow):
         except StopIteration:
             print("end of iteration")
 
-
     def build_menu(self):
-
         menu = self.menuBar()
         file_menu = menu.addMenu('File')
         file_menu.addAction('Open Panel File', self.select_file)
@@ -192,7 +190,7 @@ class MainWindow(qtw.QMainWindow):
                         st = const.State.THROWN
                     else:
                         st = const.State.CLOSED
-                    if self.simulationIsOn:
+                    if self.settings.value('simulation_on', type=bool):
                         pe.state = st
                         self.update()
                     else:
@@ -206,30 +204,30 @@ class MainWindow(qtw.QMainWindow):
 
     def draw(self, qp):
         size = self.size()   # size of Main-window !!
-        #print("size width="+str(size.width())+ " height="+str(size.height()))
-# TODO better use viewport ??
+
         # draw raster
         qp.setPen(qtg.QPen(qtc.Qt.black))
         for x in range(0, size.width(), 20):   # TODO must size_width be scaled with scaling factor ??
             for y in range(0, size.height(), 20):  # TODO size.height??
                 qp.drawPoint(x, y)
 
+        addr_flag = self.settings.value('disp_dcc_addresses', type=bool)
+
         # draw Tracks
         for t in config.trks:
-            t.draw(qp)
+            t.draw(qp, addr_flag)
 
-        adr_flag = self.settings.value('disp_dcc_addresses', type=bool)
         # draw Sensors
         for t in config.sens:
-            t.draw(qp, adr_flag)
+            t.draw(qp, addr_flag)
 
         # draw Turnouts (depend on t.state)
         for t in config.turn:
-            t.draw(qp, adr_flag)
+            t.draw(qp, addr_flag)
 
         # draw signals (depend on t.state)
         for t in config.signals:
-            t.draw(qp, adr_flag)
+            t.draw(qp, addr_flag)
 
     def showAboutBox(self):
         print("About: not yet implemented.")

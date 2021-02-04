@@ -43,6 +43,11 @@ class SettingsDialog(qtw.QDialog):
             self.port_text.setText("1234")
         self.layout().addRow("Port", self.port_text)
 
+        self.simulation_cb = qtw.QCheckBox(
+            checked=settings.value('simulation_on', type=bool)
+        )
+        self.layout().addRow("Only simulation", self.simulation_cb)
+
         self.layout().addRow(" ", None)
         self.layout().addRow(qtw.QLabel('<H4>Panel Settings</H4>'))
 
@@ -89,6 +94,11 @@ class SettingsDialog(qtw.QDialog):
         print("hostname=" + self.settings.value('hostname'))
         self.settings.setValue('port',self.port_text.text())
         print("port=" + self.settings.value('port'))
+        self.settings.setValue(
+            'simulation_on',
+            self.simulation_cb.isChecked()
+        )
+        print("simulation:" + str(self.settings.value('simulation_on')))
         self.settings.setValue(
             'disp_dcc_addresses',
             self.disp_addr_cb.isChecked()
