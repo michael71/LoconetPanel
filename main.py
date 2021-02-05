@@ -29,11 +29,8 @@ def print_statistics():
     print("main, #sens=" + str(len(config.sens)))
     print("main, #turn=" + str(len(config.turn)))
     print("main, #signals=" + str(len(config.signals)))
+    print("main, #rt-buttons=" + str(len(config.rtBtns)))
     # print("main, adr of first sensor="+str(config.sens[0].adr))
-
-
-
-
 
 class MainWindow(qtw.QMainWindow):
     """application main window
@@ -182,10 +179,10 @@ class MainWindow(qtw.QMainWindow):
             x = e.x()/sc
             y = e.y()/sc
             # print("mouse pressed (left)"+str(x)+"/"+str(y))
-            list_active_pes = config.turn + config.signals  # all active panel elements
+            list_active_pes = config.turn + config.signals + config.rtBtns # all active panel elements
             for pe in list_active_pes:
                 if pe.touched(x, y):
-                    print("hit adr="+str(pe.adr)+" st="+str(pe.state))
+                    # print("hit adr="+str(pe.adr)+" st="+str(pe.state))
                     if pe.state == const.State.CLOSED:  # toggle state
                         st = const.State.THROWN
                     else:
@@ -212,6 +209,7 @@ class MainWindow(qtw.QMainWindow):
                 qp.drawPoint(x, y)
 
         addr_flag = self.settings.value('disp_dcc_addresses', type=bool)
+        route_flag = True    # self.settings.value('routes_enabled', type=bool)
 
         # draw Tracks
         for t in config.trks:
@@ -228,6 +226,12 @@ class MainWindow(qtw.QMainWindow):
         # draw signals (depend on t.state)
         for t in config.signals:
             t.draw(qp, addr_flag)
+
+        if route_flag:
+            # draw route buttons
+            for t in config.rtBtns:
+                t.draw(qp, addr_flag)
+
 
     def showAboutBox(self):
         print("About: not yet implemented.")
