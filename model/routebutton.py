@@ -8,6 +8,12 @@ class Routebutton():
 
     @staticmethod
     def gray_pen():
+        pen = qtg.QPen(qtc.Qt.gray, 12, qtc.Qt.SolidLine)
+        pen.setCapStyle(qtc.Qt.RoundCap)
+        return pen
+
+    @staticmethod
+    def lightgray_pen():
         pen = qtg.QPen(qtc.Qt.lightGray, 12, qtc.Qt.SolidLine)
         pen.setCapStyle(qtc.Qt.RoundCap)
         return pen
@@ -25,8 +31,8 @@ class Routebutton():
         return pen
 
     def __init__(self, attr):
-        self.state = State.UNKNOWN
-        self.adr = attr['adr'].value
+        self.state = State.CLOSED   # state is always known at start (not stored in Intellibox!)
+        self.adr = int(attr['adr'].value)
         self.x = int(attr['x'].value)
         self.y = int(attr['y'].value)
 
@@ -47,14 +53,12 @@ class Routebutton():
 
     # draw Route Btn
     def draw(self, qp, addr_flag):
-        if self.state == State.UNKNOWN:
-            qp.setPen(Routebutton.gray_pen())
-        elif self.state == State.CLOSED:
+        if self.state == State.CLOSED:
             qp.setPen(Routebutton.gray_pen())
         elif self.state == State.THROWN:
             qp.setPen(Routebutton.white_pen())
         qp.drawEllipse(self.x-6, self.y-6, 12,12)
         qp.setPen(Routebutton.red_pen())
         if addr_flag:
-            qp.drawText(self.x, self.y + 15, str(self.adr))
+            qp.drawText(self.x-6, self.y + 15, str(self.adr))
 

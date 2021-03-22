@@ -21,7 +21,7 @@ class PanelData:
 
     def readXML(self, filename, printFlag):
         xmldoc = minidom.parse(filename)
-        print(xmldoc)
+        print('reading xml-file: '+filename)
 
         config.trks = []
         config.turn = []
@@ -47,7 +47,7 @@ class PanelData:
 
         rtbtns_list = xmldoc.getElementsByTagName('routebutton')
         for t in rtbtns_list:
-            config.signals.append(Routebutton(t.attributes))
+            config.rtBtns.append(Routebutton(t.attributes))
 
         if printFlag:
             print(str(len(config.trks)) + " tracks:")

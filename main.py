@@ -66,7 +66,6 @@ class MainWindow(qtw.QMainWindow):
 
         # Setup the menu
         self.build_menu()
-        self.simulationIsOn = True
 
         panel_file = self.settings.value('panel_file')
         if not panel_file or not os.path.isfile(panel_file):
@@ -179,15 +178,16 @@ class MainWindow(qtw.QMainWindow):
             x = e.x()/sc
             y = e.y()/sc
             # print("mouse pressed (left)"+str(x)+"/"+str(y))
-            list_active_pes = config.turn + config.signals + config.rtBtns # all active panel elements
+            list_active_pes = config.turn + config.signals # all active panel elements on LN
             for pe in list_active_pes:
                 if pe.touched(x, y):
-                    # print("hit adr="+str(pe.adr)+" st="+str(pe.state))
+                    print("hit adr="+str(pe.adr)+" st="+str(pe.state))
                     if pe.state == const.State.CLOSED:  # toggle state
                         st = const.State.THROWN
                     else:
                         st = const.State.CLOSED
                     if self.settings.value('simulation_on', type=bool):
+                        print("changing to: st=" + str(st))
                         pe.state = st
                         self.update()
                     else:
@@ -196,6 +196,18 @@ class MainWindow(qtw.QMainWindow):
                         if lnstring:
                             self.interface.send_message(lnstring)
                     break
+
+            for rtb in config.rtBtns:     # route button state always simulated, NOT sent on LN
+                if rtb.touched(x, y):
+                    print("hit rtbtn adr=" + str(rtb.adr) + " st=" + str(rtb.state))
+                    if rtb.state == const.State.CLOSED:  # toggle state
+                        rtb.state = const.State.THROWN
+                    else:
+                        rtb.state = const.State.CLOSED
+                    print("changing rtbtn to: st=" + str(rtb.state))
+                    self.update()
+                    break
+
             e.accept()
         # right button not yet implemented
 

@@ -13,7 +13,7 @@ class RequestStates(qtc.QObject):
     def __init__(self):
         super().__init__()
 
-    def buildLNRequestCommand(self, adr):
+    def buildLnRequestCommand(self, adr):
         if (adr > 127) or (adr < 1):  # TODO extend to higher addresses
             return
         # example BC 0F 00 4C (request turnout 16 state)
