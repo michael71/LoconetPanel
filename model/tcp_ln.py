@@ -38,7 +38,7 @@ class TcpLNClient(qtc.QObject):
 
 #    received = qtc.pyqtSignal(str)            # line
     error = qtc.pyqtSignal(str)               # error msg
-    rec_state = qtc.pyqtSignal(int, int)      # turnout-address, state
+    rec_state = qtc.pyqtSignal(int, int)      # turnout(or signal)-address, state
     rec_sens_state = qtc.pyqtSignal(int, int)  # sensor-address, state
     error_to_gui = qtc.pyqtSignal(str)        # error msg
 
@@ -50,12 +50,9 @@ class TcpLNClient(qtc.QObject):
         self.settings = main_win.settings
 
         self.port = self.get_port()           # 'safe' settings
-        self.hostname = self.get_hostname()   #defaults to localhost
+        self.hostname = self.get_hostname()   # defaults to localhost
         self.tcpSocket.connectToHost(
             self.hostname, self.port, qtc.QIODevice.ReadWrite)
-
-        # send any message you like it could come from a widget text.
-        # self.tcpSocket.write(b'hello')
 
         self.tcpSocket.readyRead.connect(self.receive)
         self.tcpSocket.error.connect(self.display_error)
@@ -111,6 +108,7 @@ class TcpLNClient(qtc.QObject):
 
         if len(cmd) < 11:
             return
+        print('rec: '+cmd)
         try:
             ba = bytearray.fromhex(cmd[:11])  # split into 4 bytes (throw away byte#5ff.)
         except ValueError:
@@ -164,7 +162,8 @@ class TcpLNClient(qtc.QObject):
         """Prepare and send a message"""
         msg = 'SEND ' + message + '\r\n'
         if self.tcpSocket.state() != qtn.QAbstractSocket.ConnectedState:
-            self.tcpSocket.connectToHost('localhost', self.port)
+            # self.tcpSocket.connectToHost('localhost', self.port)
+            self.reconnect()
 
         if self.tcpSocket.state() == qtn.QAbstractSocket.ConnectedState:
             print("sending: "+msg, end=" ")

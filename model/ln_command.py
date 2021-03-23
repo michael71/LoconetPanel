@@ -6,7 +6,7 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtNetwork as qtn
 from PyQt5 import QtCore as qtc
 
-from .constants import State
+from model import constants as const
 
 
 def request_state(adr):
@@ -26,7 +26,7 @@ def request_state(adr):
 def set_accessory(adr, st):
     if (adr > 127) or (adr < 1):  # TODO extend to higher addresses
         return
-    if st == 1:
+    if st == const.State.CLOSED:
         cmd = [0xB0, (adr - 1), 0x30, 0x00]
     else:
         cmd = [0xB0, (adr - 1), 0x10, 0x00]

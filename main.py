@@ -187,7 +187,7 @@ class MainWindow(qtw.QMainWindow):
                     else:
                         st = const.State.CLOSED
                     if self.settings.value('simulation_on', type=bool):
-                        print("changing to: st=" + str(st))
+                        print("sim changing to: st=" + str(st))
                         pe.state = st
                         self.update()
                     else:
@@ -252,6 +252,7 @@ class MainWindow(qtw.QMainWindow):
 #        print("rec: "+msg)
 
     def rec_accessory_state_change(self, adr, st):
+        print('rec new adr/st: '+str(adr)+'/'+str(st))
         if config.turn:   # this callback function can be called before a panel is read
             for t in config.turn:
                 if t.adr == adr:
