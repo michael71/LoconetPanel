@@ -254,7 +254,7 @@ class MainWindow(qtw.QMainWindow):
     def rec_accessory_state_change(self, adr, st):
         print('rec new adr/st: '+str(adr)+'/'+str(st))
         if config.turn:   # this callback function can be called before a panel is read
-            for t in config.turn:
+            for t in config.turn + config.signals:
                 if t.adr == adr:
                     t.state = st
                     self.update()

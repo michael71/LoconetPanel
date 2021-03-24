@@ -126,7 +126,7 @@ class TcpLNClient(qtc.QObject):
             if (ba[2] & 0x30) == 0x30:
                 print("T{} closed".format(self.last_adr))
                 self.rec_state.emit(self.last_adr, State.CLOSED)
-            else:  # 0x50.showLocoMessages
+            else:
                 print("T{} thrown".format(self.last_adr))
                 self.rec_state.emit(self.last_adr, State.THROWN)
         elif ba[0] == 0xB0:  # set turnout

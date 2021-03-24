@@ -39,9 +39,9 @@
                 <sensor adr="8,1008" x="810" x2="1080" y="180" y2="180"/>
             </sensors>
             <signals>
-                <signal adr="23" x="240" x2="227" y="140" y2="140"/>
+                <signal adr="21" x="240" x2="227" y="140" y2="140"/>
                 <signal adr="22" x="240" x2="227" y="100" y2="100"/>
-                <signal adr="21" x="240" x2="227" y="60" y2="60"/>
+                <signal adr="23" x="240" x2="227" y="60" y2="60"/>
                 <signal adr="20" x="370" x2="383" y="60" y2="60"/>
             </signals>
             <routebuttons>
