@@ -8,10 +8,8 @@ class State(IntEnum):
     UNKNOWN = 2
     FREE = 3
     OCCUPIED = 4
-    # HP0 = 0   # default
-    # HP1 = 1
-    # HP2 = 2
-    # SH1 = 3
+    # HP2 = 3
+    # SH1 = 4
 
 
 MIN_SCALE = 0.7

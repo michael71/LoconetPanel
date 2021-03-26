@@ -38,13 +38,10 @@ class MainWindow(qtw.QMainWindow):
 
 
     def __init__(self):
-        """MainWindow constructor.
-
-        This widget will be our main window.
+        """MainWindow constructor. This widget will be our main window.
         We'll define all the UI components in here.
         """
         super().__init__()
-        # Main UI code goes here
 
         self.settings = qtc.QSettings('blank-edv', 'loconet_panel')
         self.counter = 0
@@ -110,7 +107,7 @@ class MainWindow(qtw.QMainWindow):
         file_menu.addAction('Exit', self.close)
 
         edit_menu = menu.addMenu('Help')
-        edit_menu.addAction('About', self.showAboutBox)
+        edit_menu.addAction('About', self.show_about_box)
 
     def show_settings(self):
         old_port = self.settings.value('port')
@@ -244,8 +241,7 @@ class MainWindow(qtw.QMainWindow):
             for t in config.rtBtns:
                 t.draw(qp, addr_flag)
 
-
-    def showAboutBox(self):
+    def show_about_box(self):
         print("About: not yet implemented.")
 
 #    def received_message(self, msg):   NOT USED

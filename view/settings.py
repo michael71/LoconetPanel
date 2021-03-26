@@ -1,7 +1,3 @@
-import sys
-import os
-from pathlib import Path
-
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
@@ -23,7 +19,6 @@ class SettingsDialog(qtw.QDialog):
         self.layout().addRow(
             qtw.QLabel('<h4>LbServer Settings</h4>'),
         )
-
 
         self.hostname_text = qtw.QLineEdit()
         hn = self.settings.value("hostname")
