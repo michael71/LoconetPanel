@@ -75,7 +75,7 @@ class MainWindow(qtw.QMainWindow):
         self.timer = qtc.QTimer()
         self.timer.setInterval(400)   # every 400 millis
         self.timer.timeout.connect(self.timer_interval)
-        self.tu_it = iter(config.turn)
+        self.tu_it = iter(config.turn + config.signals)
         self.timer.start()
 
         self.panel_w = 600
@@ -88,7 +88,7 @@ class MainWindow(qtw.QMainWindow):
         self.counter += 1
         if self.counter <= 10:
             return
-        if self.counter >= (10 + len(config.turn)):
+        if self.counter >= (10 + len(config.turn + config.signals)):
             self.timer.stop()
         try:
             adr = next(self.tu_it).adr
