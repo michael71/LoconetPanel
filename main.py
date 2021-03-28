@@ -32,10 +32,17 @@ def print_statistics():
     print("main, #rt-buttons=" + str(len(config.rtBtns)))
     # print("main, adr of first sensor="+str(config.sens[0].adr))
 
+
+def show_about_box():
+    print("About: not yet implemented.")
+
+
+
+
+
 class MainWindow(qtw.QMainWindow):
     """application main window
     """
-
 
     def __init__(self):
         """MainWindow constructor. This widget will be our main window.
@@ -107,7 +114,7 @@ class MainWindow(qtw.QMainWindow):
         file_menu.addAction('Exit', self.close)
 
         edit_menu = menu.addMenu('Help')
-        edit_menu.addAction('About', self.show_about_box)
+        edit_menu.addAction('About', show_about_box)
 
     def show_settings(self):
         old_port = self.settings.value('port')
@@ -193,17 +200,18 @@ class MainWindow(qtw.QMainWindow):
                         if lnstring:
                             self.interface.send_message(lnstring)
                     break
+            if self.settings.value('routing_enabled', type=bool):
+                for rtb in config.rtBtns:     # route button state always simulated, NOT sent on LN
+                    if rtb.touched(x, y):
+                        print("hit rtbtn adr=" + str(rtb.adr) + " st=" + str(rtb.state))
+                        if rtb.state == const.State.CLOSED:  # toggle state
+                            rtb.state = const.State.THROWN
+                        else:
+                            rtb.state = const.State.CLOSED
+                        print("changing rtbtn to: st=" + str(rtb.state))
+                        self.update()
+                        break
 
-            for rtb in config.rtBtns:     # route button state always simulated, NOT sent on LN
-                if rtb.touched(x, y):
-                    print("hit rtbtn adr=" + str(rtb.adr) + " st=" + str(rtb.state))
-                    if rtb.state == const.State.CLOSED:  # toggle state
-                        rtb.state = const.State.THROWN
-                    else:
-                        rtb.state = const.State.CLOSED
-                    print("changing rtbtn to: st=" + str(rtb.state))
-                    self.update()
-                    break
 
             e.accept()
         # right button not yet implemented
@@ -218,7 +226,7 @@ class MainWindow(qtw.QMainWindow):
                 qp.drawPoint(x, y)
 
         addr_flag = self.settings.value('disp_dcc_addresses', type=bool)
-        route_flag = True    # self.settings.value('routes_enabled', type=bool)
+        route_flag = self.settings.value('routing_enabled', type=bool)
 
         # draw Tracks
         for t in config.trks:
@@ -241,10 +249,7 @@ class MainWindow(qtw.QMainWindow):
             for t in config.rtBtns:
                 t.draw(qp, addr_flag)
 
-    def show_about_box(self):
-        print("About: not yet implemented.")
-
-#    def received_message(self, msg):   NOT USED
+    #    def received_message(self, msg):   NOT USED
 #        print("rec: "+msg)
 
     def rec_accessory_state_change(self, adr, st):

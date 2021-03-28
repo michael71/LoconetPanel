@@ -3,6 +3,7 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 
 from model import constants
+from model.routebutton import reset_rtbtns
 
 
 class SettingsDialog(qtw.QDialog):
@@ -39,26 +40,23 @@ class SettingsDialog(qtw.QDialog):
         self.layout().addRow("Port", self.port_text)
 
         self.simulation_cb = qtw.QCheckBox(
-            checked=settings.value('simulation_on', type=bool)
+            checked = settings.value('simulation_on', type=bool)
         )
         self.layout().addRow("Only simulation", self.simulation_cb)
+
+        self.routing_cb = qtw.QCheckBox(checked = settings.value('routing_enabled', type=bool))
+        self.layout().addRow("Enable routing", self.routing_cb)
 
         self.layout().addRow(" ", None)
         self.layout().addRow(qtw.QLabel('<H4>Panel Settings</H4>'))
 
-        self.disp_addr_cb = qtw.QCheckBox(
-            checked=settings.value('disp_dcc_addresses', type=bool)
-        )
+        self.disp_addr_cb = qtw.QCheckBox(checked = settings.value('disp_dcc_addresses', type=bool))
         self.layout().addRow("Display DCC Addresses", self.disp_addr_cb)
 
-        self.disp_loco_msg_cb = qtw.QCheckBox(
-            checked=settings.value('disp_loco_messages', type=bool)
-        )
+        self.disp_loco_msg_cb = qtw.QCheckBox(checked = settings.value('disp_loco_messages', type=bool))
         self.layout().addRow("Display Loco Messages", self.disp_loco_msg_cb)
 
-        self.disp_sensor_msg_cb = qtw.QCheckBox(
-            checked=settings.value('disp_sensor_messages',type=bool)
-        )
+        self.disp_sensor_msg_cb = qtw.QCheckBox(checked = settings.value('disp_sensor_messages', type=bool))
         self.layout().addRow("Display Sensor Messages", self.disp_sensor_msg_cb)
 
         self.scale_text = qtw.QLineEdit()
@@ -84,30 +82,40 @@ class SettingsDialog(qtw.QDialog):
         event.accept()
 
     def accept(self):
-        #self.settings['show_warnings'] = self.show_warnings_cb.isChecked()
         self.settings.setValue('hostname', self.hostname_text.text())
-        print("hostname=" + self.settings.value('hostname'))
         self.settings.setValue('port',self.port_text.text())
-        print("port=" + self.settings.value('port'))
         self.settings.setValue(
             'simulation_on',
             self.simulation_cb.isChecked()
         )
-        print("simulation:" + str(self.settings.value('simulation_on')))
         self.settings.setValue(
             'disp_dcc_addresses',
             self.disp_addr_cb.isChecked()
         )
-        print("ddc-addr:" + str(self.settings.value('disp_dcc_addresses')))
+        self.settings.setValue(
+            'routing_enabled',
+            self.routing_cb.isChecked()
+        )
+        if not self.settings.value('routing_enabled'):
+            reset_rtbtns()
+
         self.settings.setValue(
             'disp_loco_messages',
             self.disp_loco_msg_cb.isChecked()
         )
-        print("loco-msg:" + str(self.settings.value('disp_loco_messages')))
+
         self.settings.setValue(
             'disp_sensor_messages',
             self.disp_sensor_msg_cb.isChecked()
         )
+
+        # debug output
+        print("hostname=" + self.settings.value('hostname'))
+        print("port=" + self.settings.value('port'))
+        print("simulation:" + str(self.settings.value('simulation_on')))
+        print("routing:" + str(self.settings.value('routing_enabled')))
+        print("ddc-addr:" + str(self.settings.value('disp_dcc_addresses')))
+        print("loco-msg:" + str(self.settings.value('disp_loco_messages')))
         print("sensor-msg:" + str(self.settings.value('disp_sensor_messages')))
 
         scale_value = float(self.scale_text.text())

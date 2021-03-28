@@ -1,7 +1,14 @@
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 
+
 from .constants import State
+
+
+def reset_rtbtns():
+    import config
+    for rtb in config.rtBtns:
+        rtb.state = State.CLOSED
 
 
 class Routebutton():
