@@ -30,6 +30,7 @@ def print_statistics():
     print("main, #turn=" + str(len(config.turn)))
     print("main, #signals=" + str(len(config.signals)))
     print("main, #rt-buttons=" + str(len(config.rtBtns)))
+    print("main, #routes=" + str(len(config.routes)))
     # print("main, adr of first sensor="+str(config.sens[0].adr))
 
 

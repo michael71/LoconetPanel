@@ -12,6 +12,7 @@ from .turnout import Turnout
 from .sensor import Sensor
 from .signal import Signal
 from .routebutton import Routebutton
+from .route import Route
 
 
 class PanelData:
@@ -28,6 +29,7 @@ class PanelData:
         config.sens = []
         config.signals = []
         config.rtBtns = []
+        config.routes = []
 
         track_list = xmldoc.getElementsByTagName('track')
         for t in track_list:
@@ -49,6 +51,10 @@ class PanelData:
         for t in rtbtns_list:
             config.rtBtns.append(Routebutton(t.attributes))
 
+        routes_list = xmldoc.getElementsByTagName('route')
+        for t in routes_list:
+            config.routes.append(Route(t.attributes))
+
         if printFlag:
             print(str(len(config.trks)) + " tracks:")
             for tr in config.trks:
@@ -63,12 +69,16 @@ class PanelData:
                 print(se)
 
             print(str(len(config.signals)) + " signals:")
-            for se in config.signals:
-                print(se)
+            for si in config.signals:
+                print(si)
 
             print(str(len(config.rtBtns)) + " route buttons:")
-            for se in config.rtBtns:
-                print(se)
+            for rb in config.rtBtns:
+                print(rb)
+
+            print(str(len(config.routes)) + " routes:")
+            for ro in config.routes:
+                print(ro)
 
         # determine place needed for panel
         panel_w = 0
