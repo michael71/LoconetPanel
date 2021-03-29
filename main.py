@@ -15,6 +15,7 @@ from PyQt5 import QtCore as qtc
 
 from model import constants as const
 from model.readxml import PanelData
+from model.route import check_routes, one_btn_selected
 
 from model.tcp_ln import TcpLNClient
 from view.settings import SettingsDialog
@@ -204,12 +205,17 @@ class MainWindow(qtw.QMainWindow):
             if self.settings.value('routing_enabled', type=bool):
                 for rtb in config.rtBtns:     # route button state always simulated, NOT sent on LN
                     if rtb.touched(x, y):
-                        print("hit rtbtn adr=" + str(rtb.adr) + " st=" + str(rtb.state))
-                        if rtb.state == const.State.CLOSED:  # toggle state
-                            rtb.state = const.State.THROWN
+                        if one_btn_selected():
+                            # this button is ether already selected or is the second button
+                            if rtb.state == const.BtnState.FIRST_SEL:
+                                rtb.state = const.BtnState.NOT_SEL # unselect (=toggle)
+                            else:
+                                rtb.state = const.BtnState.SECOND_SEL
                         else:
-                            rtb.state = const.State.CLOSED
-                        print("changing rtbtn to: st=" + str(rtb.state))
+                            rtb.state = const.BtnState.FIRST_SEL  # first button
+                        print("hit rtbtn adr=" + str(rtb.adr) + " st=" + str(rtb.state))
+                        if rtb.state == const.BtnState.SECOND_SEL:
+                            check_routes()
                         self.update()
                         break
 

@@ -1,10 +1,41 @@
-from model.constants import State
+from model.constants import BtnState, RouteState
+import config
+
+
+def check_routes():
+    btn1 = None
+    btn2 = None
+    # check for first active button
+    for b in config.rtBtns:
+        if b.state == BtnState.FIRST_SEL:
+            btn1 = b
+            break
+
+    # check for second active button
+    for b in config.rtBtns:
+        if b.state == BtnState.SECOND_SEL:
+            btn2 = b
+            break
+
+    if btn1 is not None and btn2 is not None:
+        print("route found, from btn1=" + str(btn1.adr) + " to btn2=" + str(btn2.adr))
+        # TODO set route
+        # deactivate both buttons
+        btn2.state = BtnState.NOT_SEL
+        btn1.state = BtnState.NOT_SEL
+
+
+def one_btn_selected():
+    for b in config.rtBtns:
+        if b.state == BtnState.FIRST_SEL:
+            return True # at least one button is selected
+    return False
 
 
 class Route():
 
     def __init__(self, attr):
-        self.state = State.CLOSED   # state is always known at start (not stored in Intellibox!)
+        self.state = RouteState.NOT_ACTIVE   # state is always known at start (not stored in Intellibox!)
         self.adr = int(attr['adr'].value)
         self.btn1 = int(attr['btn1'].value)
         self.btn2 = int(attr['btn2'].value)

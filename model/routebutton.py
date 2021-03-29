@@ -2,13 +2,13 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 
 
-from .constants import State
+from .constants import BtnState
 
 
 def reset_rtbtns():
     import config
     for rtb in config.rtBtns:
-        rtb.state = State.CLOSED
+        rtb.state = BtnState.NOT_SEL
 
 
 class Routebutton():
@@ -38,7 +38,7 @@ class Routebutton():
         return pen
 
     def __init__(self, attr):
-        self.state = State.CLOSED   # state is always known at start (not stored in Intellibox!)
+        self.state = BtnState.NOT_SEL   # state is always known at start (not stored in Intellibox!)
         self.adr = int(attr['adr'].value)
         self.x = int(attr['x'].value)
         self.y = int(attr['y'].value)
@@ -60,9 +60,9 @@ class Routebutton():
 
     # draw Route Btn
     def draw(self, qp, addr_flag):
-        if self.state == State.CLOSED:
+        if self.state == BtnState.NOT_SEL:
             qp.setPen(Routebutton.gray_pen())
-        elif self.state == State.THROWN:
+        else:
             qp.setPen(Routebutton.white_pen())
         qp.drawEllipse(self.x-6, self.y-6, 12,12)
         qp.setPen(Routebutton.red_pen())
