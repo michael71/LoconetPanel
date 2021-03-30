@@ -18,11 +18,23 @@ def check_routes():
             break
 
     if btn1 is not None and btn2 is not None:
-        print("route found, from btn1=" + str(btn1.adr) + " to btn2=" + str(btn2.adr))
-        # TODO set route
-        # deactivate both buttons
-        btn2.state = BtnState.NOT_SEL
-        btn1.state = BtnState.NOT_SEL
+        rt_found = False
+        for rt in config.routes:
+            if rt.btn1 == btn1.adr and rt.btn2 == btn2.adr:
+                print("route found, from btn1=" + str(btn1.adr) + " to btn2=" + str(btn2.adr))
+                rt_found = True
+                # TODO set route
+                # deactivate both buttons
+                btn2.state = BtnState.NOT_SEL
+                btn1.state = BtnState.NOT_SEL
+                return
+
+        if not rt_found:
+            print("no route found from btn1="+ str(btn1.adr) + " to btn2=" + str(btn2.adr))
+            btn2.state = BtnState.NOT_SEL
+
+    return
+
 
 
 def one_btn_selected():
