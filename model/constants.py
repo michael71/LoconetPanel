@@ -22,6 +22,9 @@ class RouteState(IntEnum):
     NOT_ACTIVE = 0
     ACTIVE = 1
 
+class SensorRouteState(IntEnum):
+    NOT_IN_ROUTE = 0
+    IN_ROUTE = 1
 
 MIN_SCALE = 0.7
 MAX_SCALE = 3.0

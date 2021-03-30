@@ -1,8 +1,31 @@
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 
-from .constants import State
+import config
+from .constants import State, SensorRouteState
 from .track import Track
+
+
+def set_sensors_route_state(s_list):
+    a_list = s_list.split(',')
+    map_object = map(int, a_list)
+    list_of_integers = list(map_object)
+    for s_adr in list_of_integers:
+        for s in config.sens:
+            if s_adr == s.adr:
+                s.route_state = SensorRouteState.IN_ROUTE
+    return
+
+
+def reset_sensors_route_state(s_list):
+    a_list = s_list.split(',')
+    map_object = map(int, a_list)
+    list_of_integers = list(map_object)
+    for s_adr in list_of_integers:
+        for s in config.sens:
+            if s_adr == s.adr:
+                s.route_state = SensorRouteState.NOT_IN_ROUTE
+    return
 
 
 class Sensor(Track):
@@ -38,6 +61,7 @@ class Sensor(Track):
     def __init__(self, attr):
         super().__init__(attr)
         self.state = State.UNKNOWN
+        self.route_state = SensorRouteState.NOT_IN_ROUTE
         addresses = str(attr['adr'].value).split(",")
         if len(addresses) >= 1:
             self.adr = int(addresses[0])
@@ -56,12 +80,19 @@ class Sensor(Track):
 
     # draw Sensor
     def draw(self, qp, addr_flag):
-        if self.state == State.UNKNOWN:
-            qp.setPen(Sensor.gray_pen())
-        elif self.state == State.FREE:
-            qp.setPen(Sensor.white_pen())
-        elif self.state == State.OCCUPIED:
-            qp.setPen(Sensor.red_pen())
+        if self.route_state == SensorRouteState.NOT_IN_ROUTE:
+            if self.state == State.UNKNOWN:
+                qp.setPen(Sensor.gray_pen())
+            elif self.state == State.FREE:
+                qp.setPen(Sensor.white_pen())
+            elif self.state == State.OCCUPIED:
+                qp.setPen(Sensor.red_pen())
+        else:
+            if self.state == State.UNKNOWN or self.state == State.FREE:
+                qp.setPen(Sensor.yellow_pen())
+            else:
+                qp.setPen(Sensor.red_pen())
+
         qp.drawLine(self.x, self.y, self.x2, self.y2)
         qp.setPen(Sensor.red_pen())
         if addr_flag:
