@@ -6,26 +6,14 @@ from .constants import State, SensorRouteState
 from .track import Track
 
 
-def set_sensors_route_state(s_list):
-    a_list = s_list.split(',')
+def set_sensors_route_state(s_list_str, state):
+    a_list = s_list_str.split(',')
     map_object = map(int, a_list)
     list_of_integers = list(map_object)
     for s_adr in list_of_integers:
         for s in config.sens:
             if s_adr == s.adr:
-                s.route_state = SensorRouteState.IN_ROUTE
-    return
-
-
-def reset_sensors_route_state(s_list):
-    a_list = s_list.split(',')
-    map_object = map(int, a_list)
-    list_of_integers = list(map_object)
-    for s_adr in list_of_integers:
-        for s in config.sens:
-            if s_adr == s.adr:
-                s.route_state = SensorRouteState.NOT_IN_ROUTE
-    return
+                s.route_state = state
 
 
 class Sensor(Track):

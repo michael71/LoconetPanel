@@ -1,7 +1,15 @@
-from model.constants import BtnState, RouteState
+from model import ln_command
+from model.constants import BtnState, RouteState, SensorRouteState, State
 import config
 from model.routebutton import reset_rtbtns
-from model.sensor import set_sensors_route_state, reset_sensors_route_state
+from model.sensor import set_sensors_route_state
+
+
+def is_signal(adr):
+    for s in config.signals:
+        if s.adr == adr:
+            return True
+    return False
 
 
 def get_active_route():
@@ -11,7 +19,7 @@ def get_active_route():
     return None
 
 
-def check_routes():
+def check_routes(ln_interface):
     btn1 = None
     btn2 = None
     # check for first active button
@@ -30,7 +38,7 @@ def check_routes():
         for rt in config.routes:
             if rt.btn1 == btn1.adr and rt.btn2 == btn2.adr:
                 print("route found, from btn1=" + str(btn1.adr) + " to btn2=" + str(btn2.adr))
-                rt.set()
+                rt.set(ln_interface)
                 return # there should be a single route only from btn1 to a btn2 should
         # else no route found
         print("no route found from btn1="+ str(btn1.adr) + " to btn2=" + str(btn2.adr))
@@ -62,15 +70,32 @@ class Route():
     def __str__(self):
         return "Route adr={}, btn1={} btn2= {}".format(self.adr, self.btn1, self.btn2)
 
-    def set(self):
+    def set(self, ln_interface):
         print("setting route with adr="+str(self.adr))
+        set_sensors_route_state(self.sensors, SensorRouteState.IN_ROUTE)
+        # set turnouts and signals
+        acc_val_pairs = self.route.split(';')
+        print(acc_val_pairs)
+        for p in acc_val_pairs:
+            pa = p.split(',')
+            lnstring = ln_command.set_accessory(int(pa[0]), int(pa[1]))
+            if lnstring:
+                ln_interface.send_message(lnstring)
         self.state = RouteState.ACTIVE
-        set_sensors_route_state(self.sensors)
         return
 
-    def reset(self):
+    def reset(self, ln_interface):
         print("resetting route with adr="+str(self.adr))
         reset_rtbtns()
-        reset_sensors_route_state(self.sensors)
+        set_sensors_route_state(self.sensors, SensorRouteState.NOT_IN_ROUTE)
+        # reset signals, keep turnouts in current state
+        acc_val_pairs = self.route.split(';')
+        print(acc_val_pairs)
+        for p in acc_val_pairs:
+            pa = p.split(',')
+            if is_signal(int(pa[0])):
+                lnstring = ln_command.set_accessory(int(pa[0]), State.CLOSED)
+                if lnstring:
+                    ln_interface.send_message(lnstring)
         self.state = RouteState.NOT_ACTIVE
         return

@@ -39,9 +39,6 @@ def show_about_box():
     print("About: not yet implemented.")
 
 
-
-
-
 class MainWindow(qtw.QMainWindow):
     """application main window
     """
@@ -211,7 +208,7 @@ class MainWindow(qtw.QMainWindow):
                         if a_route is not None:
                             if rtb.adr == a_route.btn1 or rtb.adr == a_route.btn2:
                                 # reset this route
-                                a_route.reset()
+                                a_route.reset(self.interface)
                         else:
                             if one_btn_selected():
                                 # this button is ether already selected or is the second button
@@ -222,11 +219,9 @@ class MainWindow(qtw.QMainWindow):
                             else:
                                 rtb.state = const.BtnState.FIRST_SEL  # first button
                             if rtb.state == const.BtnState.SECOND_SEL:
-                                check_routes()
+                                check_routes(self.interface)
                         self.update()
                         break
-
-
             e.accept()
         # right button not yet implemented
 

@@ -1,8 +1,11 @@
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 
+import config
 from .constants import State
 from .track import Track
+
+
 
 
 
@@ -43,7 +46,7 @@ class Signal(Track):
 
     def draw(self, qp, addr_flag):
         qp.setPen(Signal.black_pen())
-        qp.drawEllipse(self.x-5, self.y-5,10,10)
+        qp.drawEllipse(self.x-5, self.y-5, 10, 10)
         qp.drawLine(self.x, self.y, self.x2, self.y2)
         if self.state == State.CLOSED:
             qp.setPen(Signal.red_pen())
@@ -51,7 +54,7 @@ class Signal(Track):
             qp.setPen(Signal.green_pen())
         elif self.state == State.UNKNOWN:
             qp.setPen(Signal.gray_pen())
-        qp.drawEllipse(self.x - 2, self.y - 2,4,4)
+        qp.drawEllipse(self.x - 2, self.y - 2, 4, 4)
         qp.setPen(Signal.red_pen())
         if addr_flag:
             qp.drawText((self.x + self.x2) / 2, self.y + 15, str(self.adr))
@@ -66,9 +69,7 @@ class Signal(Track):
             return False
 
     def __repr__(self):
-        return ("Signal adr={} at ({},{},{},{})".format(self.adr, self.x, self.x2,
-                                                         self.y, self.y2))
+        return ("Signal adr={} at ({},{},{},{})".format(self.adr, self.x, self.x2, self.y, self.y2))
 
     def __str__(self):
-        return ("Signal adr={} at ({},{},{},{})".format(self.adr, self.x, self.x2,
-                                                         self.y, self.y2))
+        return ("Signal adr={} at ({},{},{},{})".format(self.adr, self.x, self.x2, self.y, self.y2))

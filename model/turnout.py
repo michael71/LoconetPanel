@@ -3,6 +3,7 @@ from PyQt5 import QtCore as qtc
 
 from .constants import State
 from .track import Track
+from .utils import route_str_to_accessory_list
 
 
 class Turnout(Track):
