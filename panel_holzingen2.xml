@@ -60,7 +60,7 @@
                 <route adr="4302" btn1="4003" btn2="4001" route="1,0;3,0" sensors="3"/>
                 <route adr="4303" btn1="4000" btn2="4003" route="1,0;21,0;22,0;23,1;20,0;3,0" sensors="4,3"/>
                 <route adr="4304" btn1="4003" btn2="4000" route="1,0;21,1;22,0;23,0;20,1;3,0" sensors="3,4"/>
-                <route adr="4305" btn1="4002" btn2="4003" route="22,0;2,1;21,0;23,1;20,0;3,1" sensors="5,3"/>
+                <route adr="4305" btn1="4002" btn2="4003" route="2,1;22,0;23,0;21,1;20,0;3,1" sensors="5,3"/>
                 <route adr="4306" btn1="4003" btn2="4002" route="22,0;2,1;21,0;23,1;20,0;3,1" sensors="3,5"/>
             </routes>
             <comproutes/>
