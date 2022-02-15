@@ -37,11 +37,15 @@ class Signal(Track):
 
     def __init__(self, attr):
         super().__init__(attr)
-        try:
-            self.adr = int(attr['adr'].value)
-        except KeyError:
-            # address missing in xml file
+        addresses = str(attr['adr'].value).split(",")
+        if len(addresses) >= 1:
+            self.adr = int(addresses[0])
+        else:
             self.adr = -1
+        if len(addresses) >= 2:
+            self.adr2 = int(addresses[1])
+        else:
+            self.adr2 = -1
         self.state = State.UNKNOWN
 
     def draw(self, qp, addr_flag):
