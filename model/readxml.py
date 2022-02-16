@@ -20,8 +20,9 @@ class PanelData:
     def __init__(self):
         pass
 
-    def readXML(self, filename, printFlag):
-        xmldoc = minidom.parse(filename)
+    @staticmethod
+    def read_xml(filename, printFlag):
+        xml_doc = minidom.parse(filename)
         print('reading xml-file: '+filename)
 
         config.trks = []
@@ -31,27 +32,27 @@ class PanelData:
         config.rtBtns = []
         config.routes = []
 
-        track_list = xmldoc.getElementsByTagName('track')
+        track_list = xml_doc.getElementsByTagName('track')
         for t in track_list:
             config.trks.append(Track(t.attributes))
 
-        turnout_list = xmldoc.getElementsByTagName('turnout')
+        turnout_list = xml_doc.getElementsByTagName('turnout')
         for t in turnout_list:
             config.turn.append(Turnout(t.attributes))
 
-        sensor_list = xmldoc.getElementsByTagName('sensor')
+        sensor_list = xml_doc.getElementsByTagName('sensor')
         for t in sensor_list:
             config.sens.append(Sensor(t.attributes))
 
-        signal_list = xmldoc.getElementsByTagName('signal')
+        signal_list = xml_doc.getElementsByTagName('signal')
         for t in signal_list:
             config.signals.append(Signal(t.attributes))
 
-        rtbtns_list = xmldoc.getElementsByTagName('routebutton')
+        rtbtns_list = xml_doc.getElementsByTagName('routebutton')
         for t in rtbtns_list:
             config.rtBtns.append(Routebutton(t.attributes))
 
-        routes_list = xmldoc.getElementsByTagName('route')
+        routes_list = xml_doc.getElementsByTagName('route')
         for t in routes_list:
             config.routes.append(Route(t.attributes))
 

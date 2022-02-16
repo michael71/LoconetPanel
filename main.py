@@ -131,7 +131,7 @@ class MainWindow(qtw.QMainWindow):
     # read panel data from xml-file, set title and geometry
     def read_data_file(self, file_name):
         pd = PanelData()
-        (self.panel_w, self.panel_h) = pd.readXML(file_name, False)
+        (self.panel_w, self.panel_h) = pd.read_xml(file_name, False)
         print_statistics()
         self.setWindowTitle('LN Panel     -     ' + Path(file_name).stem)
         scale = self.get_scale()
