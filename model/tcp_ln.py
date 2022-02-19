@@ -25,9 +25,9 @@ def get_sens_adr(ba):  #
        bytes 1 and 2 code address"""
     adr = ba[1] & 0x7F  # A7...A1 for sensors ONLY !
     adr += (ba[2] & 0x0F) * 128
-    adr = adr << 1   # in case of sensor we will add a least significant bit
+    adr = adr << 1   # in case of sensor we will add the least significant bit
     adr += 1       # add 1 as always
-    adr += (ba[2] & 0x20) >> 5   # add least significant bit A0
+    adr += (ba[2] & 0x20) >> 5   # add the least significant bit A0
     return adr
 
 

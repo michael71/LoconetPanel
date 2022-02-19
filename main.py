@@ -13,6 +13,9 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 
+# does not really work for drawing (QPainter)
+# from qt_material import apply_stylesheet
+
 from model import constants as const
 from model.readxml import PanelData
 from model.route import check_routes, one_btn_selected, get_active_route
@@ -20,6 +23,7 @@ from model.route import check_routes, one_btn_selected, get_active_route
 from model.tcp_ln import TcpLNClient
 from view.settings import SettingsDialog
 import model.ln_command as ln_command
+import view.about
 
 import config
 
@@ -33,10 +37,6 @@ def print_statistics():
     print("main, #rt-buttons=" + str(len(config.rtBtns)))
     print("main, #routes=" + str(len(config.routes)))
     # print("main, adr of first sensor="+str(config.sens[0].adr))
-
-
-def show_about_box():
-    print("About: not yet implemented.")
 
 
 class MainWindow(qtw.QMainWindow):
@@ -59,27 +59,29 @@ class MainWindow(qtw.QMainWindow):
 
         # start Loconet communication
         self.interface = TcpLNClient(self)
-#        self.submitted.connect(self.interface.send_message)
-#        self.interface.received.connect(self.received_message)    NOT USED
+        #        self.submitted.connect(self.interface.send_message)
+        #        self.interface.received.connect(self.received_message)    NOT USED
         self.interface.rec_state.connect(self.rec_accessory_state_change)
         self.interface.rec_sens_state.connect(self.rec_sensor_state_change)
         self.interface.error_to_gui.connect(
             #            lambda x: qtw.QMessageBox.critical(None, 'Error', x))
             self.status_msg)
 
-        # Setup the menu
+        # Set up the menu
         self.build_menu()
+
+        self.about_box = view.about.AboutBox()
 
         panel_file = self.settings.value('panel_file')
         if not panel_file or not os.path.isfile(panel_file):
             print("from settings: filename=None")
-            self.select_file()  #includes read_data_file()
+            self.select_file()  # includes read_data_file()
         else:
             print("from settings: filename=" + panel_file)
             self.read_data_file(panel_file)
 
         self.timer = qtc.QTimer()
-        self.timer.setInterval(400)   # every 400 millis
+        self.timer.setInterval(400)  # every 400 millis
         self.timer.timeout.connect(self.timer_interval)
         self.tu_it = iter(config.turn + config.signals)
         self.timer.start()
@@ -113,7 +115,10 @@ class MainWindow(qtw.QMainWindow):
         file_menu.addAction('Exit', self.close)
 
         edit_menu = menu.addMenu('Help')
-        edit_menu.addAction('About', show_about_box)
+        edit_menu.addAction('About', self.show_about_box)
+
+    def show_about_box(self):
+        self.about_box.show()
 
     def show_settings(self):
         old_port = self.settings.value('port')
@@ -126,7 +131,7 @@ class MainWindow(qtw.QMainWindow):
             self.interface.reconnect()
 
     def status_msg(self, msg):
-        self.statusBar().showMessage(msg,10000) # display only for 10 seconds
+        self.statusBar().showMessage(msg, 10000)  # display only for 10 seconds
 
     # read panel data from xml-file, set title and geometry
     def read_data_file(self, file_name):
@@ -146,8 +151,8 @@ class MainWindow(qtw.QMainWindow):
             'XML Files (*.xml) ;; All Files (*)'
         )
         if filename:
-            print("file: "+filename)
-            self.settings.setValue('panel_file',filename)
+            print("file: " + filename)
+            self.settings.setValue('panel_file', filename)
             self.read_data_file(filename)
         else:
             print("no filename selected")
@@ -155,12 +160,12 @@ class MainWindow(qtw.QMainWindow):
     def paintEvent(self, e):
         qp = qtg.QPainter(self)
         scale = self.get_scale()
-        qp.scale(scale,scale)
+        qp.scale(scale, scale)
         self.draw(qp)
 
-    def get_scale(self):  # avoid runtime errors
+    def get_scale(self) -> float:  # avoid runtime errors
         scale_string = self.settings.value('scale')
-        if scale_string:   # there is already a scale value
+        if scale_string:  # there is already a scale value
             try:
                 scale = float(scale_string)
             except (ValueError, TypeError) as e:
@@ -178,13 +183,13 @@ class MainWindow(qtw.QMainWindow):
     def mousePressEvent(self, e):
         if e.button() == qtc.Qt.LeftButton:
             sc = self.get_scale()
-            x = e.x()/sc
-            y = e.y()/sc
+            x = e.x() / sc
+            y = e.y() / sc
             # print("mouse pressed (left)"+str(x)+"/"+str(y))
-            list_active_pes = config.turn + config.signals # all active panel elements on LN
+            list_active_pes = config.turn + config.signals  # all active panel elements on LN
             for pe in list_active_pes:
                 if pe.touched(x, y):
-                    print("hit adr="+str(pe.adr)+" st="+str(pe.state))
+                    print("hit adr=" + str(pe.adr) + " st=" + str(pe.state))
                     if pe.state == const.State.CLOSED:  # toggle state
                         st = const.State.THROWN
                     else:
@@ -195,12 +200,12 @@ class MainWindow(qtw.QMainWindow):
                         self.update()
                     else:
                         print("changing to: st=" + str(st))
-                        lnstring = ln_command.set_accessory(pe.adr,st)
+                        lnstring = ln_command.set_accessory(pe.adr, st)
                         if lnstring:
                             self.interface.send_message(lnstring)
                     break
             if self.settings.value('routing_enabled', type=bool):
-                for rtb in config.rtBtns:     # route button state always simulated, NOT sent on LN
+                for rtb in config.rtBtns:  # route button state always simulated, NOT sent on LN
                     if rtb.touched(x, y):
                         print("hit rtbtn adr=" + str(rtb.adr) + " st=" + str(rtb.state))
                         # check if already part of active route
@@ -213,7 +218,7 @@ class MainWindow(qtw.QMainWindow):
                             if one_btn_selected():
                                 # this button is ether already selected or is the second button
                                 if rtb.state == const.BtnState.FIRST_SEL:
-                                    rtb.state = const.BtnState.NOT_SEL # unselect (=toggle)
+                                    rtb.state = const.BtnState.NOT_SEL  # unselect (=toggle)
                                 else:
                                     rtb.state = const.BtnState.SECOND_SEL
                             else:
@@ -225,52 +230,52 @@ class MainWindow(qtw.QMainWindow):
             e.accept()
         # right button not yet implemented
 
-    def draw(self, qp):
-        size = self.size()   # size of Main-window !!
+    def draw(self, qpainter):
+        size = self.size()  # size of Main-window !!
 
         # draw raster
-        qp.setPen(qtg.QPen(qtc.Qt.black))
-        for x in range(0, size.width(), 20):   # TODO must size_width be scaled with scaling factor ??
+        qpainter.setPen(qtg.QPen(qtc.Qt.black))
+        for x in range(0, size.width(), 20):  # TODO must size_width be scaled with scaling factor ??
             for y in range(0, size.height(), 20):  # TODO size.height??
-                qp.drawPoint(x, y)
+                qpainter.drawPoint(x, y)
 
         addr_flag = self.settings.value('disp_dcc_addresses', type=bool)
         route_flag = self.settings.value('routing_enabled', type=bool)
 
         # draw Tracks
         for t in config.trks:
-            t.draw(qp, addr_flag)
+            t.draw(qpainter, addr_flag)
 
         # draw Sensors
         for t in config.sens:
-            t.draw(qp, addr_flag)
+            t.draw(qpainter, addr_flag)
 
         # draw Turnouts (depend on t.state)
         for t in config.turn:
-            t.draw(qp, addr_flag)
+            t.draw(qpainter, addr_flag)
 
         # draw signals (depend on t.state)
         for t in config.signals:
-            t.draw(qp, addr_flag)
+            t.draw(qpainter, addr_flag)
 
         if route_flag:
             # draw route buttons
             for t in config.rtBtns:
-                t.draw(qp, addr_flag)
+                t.draw(qpainter, addr_flag)
 
     #    def received_message(self, msg):   NOT USED
-#        print("rec: "+msg)
+    #        print("rec: "+msg)
 
     def rec_accessory_state_change(self, adr, st):
-        print('rec new adr/st: '+str(adr)+'/'+str(st))
-        if config.turn:   # this callback function can be called before a panel is read
+        print('rec new adr/st: ' + str(adr) + '/' + str(st))
+        if config.turn:  # this callback function may be called before a panel is read
             for t in config.turn + config.signals:
                 if t.adr == adr:
                     t.state = st
                     self.update()
 
     def rec_sensor_state_change(self, adr, st):
-        if config.sens:    # this callback function can be called before a panel is read
+        if config.sens:  # this callback function may be called before a panel is read
             for s in config.sens:
                 if s.adr == adr:
                     s.state = st
@@ -279,7 +284,9 @@ class MainWindow(qtw.QMainWindow):
 
 if __name__ == '__main__':
     app = qtw.QApplication(sys.argv)
+    mw = MainWindow()
     # it's required to save a reference to MainWindow.
     # if it goes out of scope, it will be destroyed.
-    mw = MainWindow()
+    # apply_stylesheet(app, theme='light_teal.xml', invert_secondary=True) - does not work as expected
+
     sys.exit(app.exec())

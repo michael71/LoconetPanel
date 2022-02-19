@@ -7,7 +7,7 @@ from model.routebutton import reset_rtbtns
 
 
 class SettingsDialog(qtw.QDialog):
-    """Dialog for setting the settings"""
+    """Dialog for selecting and storing settings values"""
 
     def __init__(self, settings, parent=None):
         super().__init__(parent, modal=False)
@@ -75,7 +75,7 @@ class SettingsDialog(qtw.QDialog):
         self.cancel_btn = qtw.QPushButton('Cancel', clicked=self.reject)
         self.layout().addRow(self.accept_btn, self.cancel_btn)
 
-    #prevents window closing when hitting ENTER in QLineEdit box
+    # prevents window closing when hitting ENTER in QLineEdit box
     def keyPressEvent(self, event):
         if event.key() == qtc.Qt.Key_Enter:
             print("enter key pressed.")

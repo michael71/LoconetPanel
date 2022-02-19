@@ -21,10 +21,15 @@ class PanelData:
         pass
 
     @staticmethod
-    def read_xml(filename, printFlag):
+    def read_xml(filename: str, printFlag: bool) -> (int, int):
+        """read layout configuration from xml
+        and store turnouts, signals etc. into config array
+        return values: width and height of panel
+        """
         xml_doc = minidom.parse(filename)
         print('reading xml-file: '+filename)
 
+        # erase current configuration
         config.trks = []
         config.turn = []
         config.sens = []
