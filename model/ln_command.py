@@ -1,11 +1,6 @@
 # ln_command.py
 # build LN commands from addresses, states ...
 
-import sys
-from PyQt5 import QtWidgets as qtw
-from PyQt5 import QtNetwork as qtn
-from PyQt5 import QtCore as qtc
-
 from model import constants as const
 
 
