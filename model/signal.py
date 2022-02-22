@@ -1,5 +1,5 @@
-from PyQt5 import QtGui as qtg
-from PyQt5 import QtCore as qtc
+from PyQt6 import QtGui as qtg
+from PyQt6 import QtCore as qtc
 
 import config
 from .constants import State
@@ -10,26 +10,26 @@ class Signal(Track):
 
     @staticmethod
     def black_pen():
-        pen = qtg.QPen(qtc.Qt.black, 3, qtc.Qt.SolidLine)
-        pen.setCapStyle(qtc.Qt.RoundCap)
+        pen = qtg.QPen(qtc.Qt.GlobalColor.black, 3, qtc.Qt.PenStyle.SolidLine)
+        pen.setCapStyle(qtc.Qt.PenCapStyle.RoundCap)
         return pen
 
     @staticmethod
     def red_pen():
-        pen = qtg.QPen(qtc.Qt.red, 4, qtc.Qt.SolidLine)
-        pen.setCapStyle(qtc.Qt.RoundCap)
+        pen = qtg.QPen(qtc.Qt.GlobalColor.red, 4, qtc.Qt.PenStyle.SolidLine)
+        pen.setCapStyle(qtc.Qt.PenCapStyle.RoundCap)
         return pen
 
     @staticmethod
     def green_pen():
-        pen = qtg.QPen(qtc.Qt.green, 4, qtc.Qt.SolidLine)
-        pen.setCapStyle(qtc.Qt.RoundCap)
+        pen = qtg.QPen(qtc.Qt.GlobalColor.green, 4, qtc.Qt.PenStyle.SolidLine)
+        pen.setCapStyle(qtc.Qt.PenCapStyle.RoundCap)
         return pen
 
     @staticmethod
     def gray_pen():
-        pen = qtg.QPen(qtc.Qt.lightGray, 4, qtc.Qt.SolidLine)
-        pen.setCapStyle(qtc.Qt.RoundCap)
+        pen = qtg.QPen(qtc.Qt.GlobalColor.lightGray, 4, qtc.Qt.PenStyle.SolidLine)
+        pen.setCapStyle(qtc.Qt.PenCapStyle.RoundCap)
         return pen
 
     def __init__(self, attr):

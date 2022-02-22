@@ -1,5 +1,5 @@
-from PyQt5 import QtGui as qtg
-from PyQt5 import QtCore as qtc
+from PyQt6 import QtGui as qtg
+from PyQt6 import QtCore as qtc
 
 import config
 from .constants import State, SensorRouteState
@@ -20,30 +20,30 @@ class Sensor(Track):
 
     @staticmethod
     def yellow_pen():
-        pen = qtg.QPen(qtc.Qt.yellow, 4, qtc.Qt.CustomDashLine)
+        pen = qtg.QPen(qtc.Qt.GlobalColor.yellow, 4, qtc.Qt.PenStyle.CustomDashLine)
         pen.setDashPattern([3, 5, 3, 5])
-        pen.setCapStyle(qtc.Qt.SquareCap)
+        pen.setCapStyle(qtc.Qt.PenCapStyle.SquareCap)
         return pen
 
     @staticmethod
     def gray_pen():
-        pen = qtg.QPen(qtc.Qt.lightGray, 4, qtc.Qt.CustomDashLine)
+        pen = qtg.QPen(qtc.Qt.GlobalColor.lightGray, 4, qtc.Qt.PenStyle.CustomDashLine)
         pen.setDashPattern([3, 5, 3, 5])
-        pen.setCapStyle(qtc.Qt.SquareCap)
+        pen.setCapStyle(qtc.Qt.PenCapStyle.SquareCap)
         return pen
 
     @staticmethod
     def white_pen():
-        pen = qtg.QPen(qtc.Qt.white, 4, qtc.Qt.CustomDashLine)
+        pen = qtg.QPen(qtc.Qt.GlobalColor.white, 4, qtc.Qt.PenStyle.CustomDashLine)
         pen.setDashPattern([3, 5, 3, 5])
-        pen.setCapStyle(qtc.Qt.SquareCap)
+        pen.setCapStyle(qtc.Qt.PenCapStyle.SquareCap)
         return pen
 
     @staticmethod
     def red_pen():
-        pen = qtg.QPen(qtc.Qt.red, 4, qtc.Qt.CustomDashLine)
+        pen = qtg.QPen(qtc.Qt.GlobalColor.red, 4, qtc.Qt.PenStyle.CustomDashLine)
         pen.setDashPattern([3, 5, 3, 5])
-        pen.setCapStyle(qtc.Qt.SquareCap)
+        pen.setCapStyle(qtc.Qt.PenCapStyle.SquareCap)
         return pen
 
     def __init__(self, attr):

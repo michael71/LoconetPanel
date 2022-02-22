@@ -6,8 +6,8 @@
 # receive and send basically work
 
 # import sys
-from PyQt5 import QtNetwork as qtn
-from PyQt5 import QtCore as qtc
+from PyQt6 import QtNetwork as qtn
+from PyQt6 import QtCore as qtc
 
 from .constants import State
 
@@ -48,10 +48,10 @@ class TcpLNClient(qtc.QObject):
         self.port = self.get_port()           # 'safe' settings
         self.hostname = self.get_hostname()   # defaults to localhost
         self.tcpSocket.connectToHost(
-            self.hostname, self.port, qtc.QIODevice.ReadWrite)
+            self.hostname, self.port, qtc.QIODevice.OpenModeFlag.ReadWrite)
 
         self.tcpSocket.readyRead.connect(self.receive)
-        self.tcpSocket.error.connect(self.display_error)
+        # TODO self.tcpSocket.error.connect(self.display_error)
 
         self.last_adr = -1  # used in lack responses
 
@@ -145,7 +145,7 @@ class TcpLNClient(qtc.QObject):
                 self.rec_sens_state.emit(adr, State.FREE)
 
     def display_error(self, socket_error):
-        if socket_error == qtn.QAbstractSocket.RemoteHostClosedError:
+        if socket_error == qtn.QAbstractSocket.error().RemoteHostClosedError:
             pass
         else:
             print("Error: %s." %
@@ -155,10 +155,10 @@ class TcpLNClient(qtc.QObject):
     def send_message(self, message):
         """Prepare and send a message"""
         msg = 'SEND ' + message + '\r\n'
-        if self.tcpSocket.state() != qtn.QAbstractSocket.ConnectedState:
+        if self.tcpSocket.state() != qtn.QAbstractSocket.state().ConnectedState:
             # self.tcpSocket.connectToHost('localhost', self.port)
             self.reconnect()
 
-        if self.tcpSocket.state() == qtn.QAbstractSocket.ConnectedState:
+        if self.tcpSocket.state() == qtn.QAbstractSocket.state().ConnectedState:
             print("sending: "+msg, end=" ")
             self.tcpSocket.write(msg.encode())

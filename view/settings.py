@@ -1,6 +1,6 @@
-from PyQt5 import QtWidgets as qtw
-from PyQt5 import QtGui as qtg
-from PyQt5 import QtCore as qtc
+from PyQt6 import QtWidgets as qtw
+from PyQt6 import QtGui as qtg
+from PyQt6 import QtCore as qtc
 
 from model import constants
 from model.routebutton import reset_rtbtns

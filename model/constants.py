@@ -1,5 +1,4 @@
 from enum import Enum, IntEnum
-from PyQt5 import QtCore as qtc
 
 
 class State(IntEnum):

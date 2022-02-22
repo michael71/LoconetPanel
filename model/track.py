@@ -2,16 +2,16 @@
 # 04 Aug 2020 - (C) Michael Blank
 #
 
-from PyQt5 import QtGui as qtg
-from PyQt5 import QtCore as qtc
+from PyQt6 import QtGui as qtg
+from PyQt6 import QtCore as qtc
 
 
 class Track:
 
     @staticmethod
     def track_pen():
-        pen = qtg.QPen(qtc.Qt.black, 6, qtc.Qt.SolidLine)
-        pen.setCapStyle(qtc.Qt.RoundCap)
+        pen = qtg.QPen(qtc.Qt.GlobalColor.black, 6, qtc.Qt.PenStyle.SolidLine)
+        pen.setCapStyle(qtc.Qt.PenCapStyle.RoundCap)
         return pen
 
     def __init__(self, attr):

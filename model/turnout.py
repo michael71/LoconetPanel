@@ -1,5 +1,5 @@
-from PyQt5 import QtGui as qtg
-from PyQt5 import QtCore as qtc
+from PyQt6 import QtGui as qtg
+from PyQt6 import QtCore as qtc
 
 from .constants import State
 from .track import Track
@@ -10,26 +10,26 @@ class Turnout(Track):
 
     @staticmethod
     def black_pen():
-        pen = qtg.QPen(qtc.Qt.black, 6, qtc.Qt.SolidLine)
-        pen.setCapStyle(qtc.Qt.RoundCap)
+        pen = qtg.QPen(qtc.Qt.GlobalColor.black, 6, qtc.Qt.PenStyle.SolidLine)
+        pen.setCapStyle(qtc.Qt.PenCapStyle.RoundCap)
         return pen
 
     @staticmethod
     def background_pen():
-        pen = qtg.QPen(qtc.Qt.lightGray, 6, qtc.Qt.SolidLine)
-        pen.setCapStyle(qtc.Qt.RoundCap)
+        pen = qtg.QPen(qtc.Qt.GlobalColor.lightGray, 6, qtc.Qt.PenStyle.SolidLine)
+        pen.setCapStyle(qtc.Qt.PenCapStyle.RoundCap)
         return pen
 
     @staticmethod
     def red_pen():
-        pen = qtg.QPen(qtc.Qt.red, 6, qtc.Qt.SolidLine)
-        pen.setCapStyle(qtc.Qt.RoundCap)
+        pen = qtg.QPen(qtc.Qt.GlobalColor.red, 6, qtc.Qt.PenStyle.SolidLine)
+        pen.setCapStyle(qtc.Qt.PenCapStyle.RoundCap)
         return pen
 
     @staticmethod
     def green_pen():
-        pen = qtg.QPen(qtc.Qt.green, 6, qtc.Qt.SolidLine)
-        pen.setCapStyle(qtc.Qt.RoundCap)
+        pen = qtg.QPen(qtc.Qt.GlobalColor.green, 6, qtc.Qt.PenStyle.SolidLine)
+        pen.setCapStyle(qtc.Qt.PenCapStyle.RoundCap)
         return pen
 
     def __init__(self, attr):
