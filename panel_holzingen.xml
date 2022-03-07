@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<layout-config filename="panel_holzingen.xml" type="?" version="20200803_155520">
+<layout-config filename="panel_holzingen2.xml" type="DCC" version="20210130_163520">
     <panels>
         <panel name="Holzingen">
             <locos/>
@@ -38,9 +38,31 @@
                 <sensor adr="2,1002" x="790" x2="1070" y="220" y2="220"/>
                 <sensor adr="8,1008" x="810" x2="1080" y="180" y2="180"/>
             </sensors>
-            <signals/>
-            <routebuttons/>
-            <routes/>
+            <signals>
+                <signal adr="21" x="240" x2="227" y="140" y2="140"/>
+                <signal adr="23" x="240" x2="227" y="100" y2="100"/>
+                <signal adr="22" x="240" x2="227" y="60" y2="60"/>
+                <signal adr="20" x="370" x2="383" y="60" y2="60"/>
+            </signals>
+            <routebuttons>
+                <routebutton adr="4000" x="140" y="80"/>
+                <routebutton adr="4001" x="140" y="40"/>
+                <routebutton adr="4002" x="140" y="120"/>
+                <routebutton adr="4003" x="500" y="80"/>
+                <routebutton adr="4004" x="840" y="80"/>
+                <routebutton adr="4005" x="840" y="40"/>
+                <routebutton adr="4006" x="940" y="180"/>
+                <routebutton adr="4007" x="940" y="220"/>
+                <routebutton adr="4008" x="940" y="260"/>
+            </routebuttons>
+            <routes>
+                <route adr="4301" btn1="4001" btn2="4003" route="1,0;3,0" sensors="3"/>
+                <route adr="4302" btn1="4003" btn2="4001" route="1,0;3,0" sensors="3"/>
+                <route adr="4303" btn1="4000" btn2="4003" route="1,0;21,0;22,0;23,1;20,0;3,0" sensors="4,3"/>
+                <route adr="4304" btn1="4003" btn2="4000" route="1,0;21,1;22,0;23,0;20,1;3,0" sensors="3,4"/>
+                <route adr="4305" btn1="4002" btn2="4003" route="2,1;22,0;23,0;21,1;20,0;3,1" sensors="5,3"/>
+                <route adr="4306" btn1="4003" btn2="4002" route="22,0;2,1;21,0;23,1;20,0;3,1" sensors="3,5"/>
+            </routes>
             <comproutes/>
             <trips/>
             <timetables/>
