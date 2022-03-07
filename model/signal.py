@@ -50,9 +50,9 @@ class Signal(Track):
         qp.drawEllipse(self.x - 5, self.y - 5, 10, 10)
         qp.drawLine(self.x, self.y, self.x2, self.y2)
         if self.state == State.CLOSED:
-            qp.setPen(Signal.red_pen())
-        elif self.state == State.THROWN:
             qp.setPen(Signal.green_pen())
+        elif self.state == State.THROWN:
+            qp.setPen(Signal.red_pen())
         elif self.state == State.UNKNOWN:
             qp.setPen(Signal.gray_pen())
         qp.drawEllipse(self.x - 2, self.y - 2, 4, 4)
